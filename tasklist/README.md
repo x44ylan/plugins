@@ -19,6 +19,18 @@ Claude marks tasks `[/]` when it starts them and `[x]` when it finishes them, an
 ## Usage
 
 - Shows the last 7 tasks; the bottom-right says which (`15-21/21`)
-- `ctrl+x tab` focuses it, then `↑` `↓` scroll and `Esc` goes back to the prompt
+- `ctrl+x tab` focuses it (the border turns white), `↑` `↓` scroll, `Esc` goes back to the prompt
 - `[-]` or `ctrl+x ctrl+a` hides and shows it
 - `/tasklist:init` merges an existing `TODO.md` / `ISSUES.md` into `TASKLIST.md`
+
+## Colours
+
+The border is gray, and white while focused. Change them in `/plugin` → tasklist → configure, or in `~/.claude/settings.json`:
+
+```json
+"pluginConfigs": {
+  "tasklist": { "options": { "borderColor": "gray", "focusColor": "cyan" } }
+}
+```
+
+Any colour name (`gray`, `white`, `cyan`, `magenta`, ...) or `#rrggbb` works.

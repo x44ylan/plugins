@@ -1,11 +1,25 @@
 {
   "name": "tasklist",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "description": "Read-only TASKLIST.md shown above the Claude Code prompt",
   "author": {
     "name": "x44ylan"
   },
   "repository": "https://github.com/x44ylan/plugins",
   "license": "MIT",
-  "types": "./types/index.d.ts"
+  "types": "./types/index.d.ts",
+  "userConfig": {
+    "borderColor": {
+      "type": "string",
+      "title": "Border colour",
+      "description": "Colour of the frame: a name (gray, white, cyan, ...) or #rrggbb",
+      "default": "gray"
+    },
+    "focusColor": {
+      "type": "string",
+      "title": "Focused border colour",
+      "description": "Colour of the frame while it has focus (ctrl+x tab)",
+      "default": "white"
+    }
+  }
 }
