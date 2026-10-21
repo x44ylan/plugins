@@ -1,6 +1,6 @@
 {
   "name": "tasklist",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Read-only TASKLIST.md shown above the Claude Code prompt",
   "author": {
     "name": "x44ylan"

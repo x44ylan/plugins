@@ -13,17 +13,21 @@ It is only a numbered list, no heading: "1. [ ] todo", "2. [/] doing", "3. [x] d
 Mark a task [/] when you start it and [x] when it is finished; append new tasks or issues you find as [ ]; keep the numbers sequential.
 Edit only the lines you change and keep the person's wording. Never create the file unasked.`
 
-// "1. [ ] todo", "2. [/] doing" ([~] and [-] too), "3. [x] done"
+// "1. [ ] todo", "2. [/] doing" ([~] and [-] too), "3. [x] done", sorted by number.
+// A task is a numbered line at the margin, or an indented one with a box;
+// other indented numbered lines are a task's notes.
 function parse(text: string): Task[] {
   const out: Task[] = []
   for (const line of text.split('\n')) {
-    const m = line.match(/^(\d+)[.)]\s+(?:\[(.)\]\s+)?(.*\S)/)
+    const m = line.match(/^(\s*)(\d+)[.)]\s+(?:\[(.)\]\s+)?(.*\S)/)
     if (!m) continue
-    const box = (m[2] ?? ' ').toLowerCase()
+    const [, indent, n, mark, rest] = m
+    if (indent && mark === undefined) continue
+    const box = (mark ?? ' ').toLowerCase()
     const status = box === 'x' ? 'done' : '/~-'.includes(box) ? 'doing' : 'todo'
-    out.push({ n: Number(m[1]), status, text: m[3].replace(/\*\*|__|`/g, '') })
+    out.push({ n: Number(n), status, text: rest.replace(/\*\*|__|`/g, '') })
   }
-  return out
+  return out.sort((a, b) => a.n - b.n)
 }
 
 function fit(s: string, w: number) {
