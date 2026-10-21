@@ -1,0 +1,11 @@
+{
+  "name": "tasklist",
+  "version": "0.1.0",
+  "description": "Read-only TASKLIST.md shown above the Claude Code prompt",
+  "author": {
+    "name": "x44ylan"
+  },
+  "repository": "https://github.com/x44ylan/plugins",
+  "license": "MIT",
+  "types": "./types/index.d.ts"
+}

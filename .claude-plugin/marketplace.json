@@ -1,0 +1,12 @@
+{
+  "name": "x44ylan",
+  "description": "Claude Plugins",
+  "owner": { "name": "x44ylan" },
+  "plugins": [
+    {
+      "name": "tasklist",
+      "source": "./tasklist",
+      "description": "Read-only TASKLIST.md shown above the Claude Code prompt"
+    }
+  ]
+}
