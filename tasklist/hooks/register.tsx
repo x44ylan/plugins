@@ -86,8 +86,8 @@ export const register: Register = (on, options) => {
     return { sections: [...r.sections, { id: 'tasklist:rules', text: RULES, scope: 'session' as const }] }
   })
 
-  // Focused (ctrl+x tab), the ring rests on the top border. ↑/↓ would move it to
-  // the corner before/after it: scroll instead and keep the ring where it is.
+  // Focused (ctrl+x tab), the ring rests on an invisible stop. ↑/↓ would move it
+  // to the stop before/after: scroll instead and keep the ring where it is.
   on('ui.focus', { component: 'AbovePrompt' }, async ($, e, next) => {
     await focus($, e.element !== undefined)
     if (e.origin.kind !== 'person' || (e.element !== 'up' && e.element !== 'down')) return next(e)
@@ -116,9 +116,11 @@ export const register: Register = (on, options) => {
     return (
       <Box flexDirection="column">
         <Box>
-          <Button key="up" plain onPress={() => move($, -1)}><Text color={edge}>╭</Text></Button>
-          <Button key="bar" plain autoFocus onPress={() => undefined}><Text color={edge}>{'─'.repeat(w - 2)}</Text></Button>
-          <Button key="down" plain onPress={() => move($, 1)}><Text color={edge}>╮</Text></Button>
+          {/* three invisible stops hold the focus ring: ↑/↓ land on up/down, which scroll */}
+          <Button key="up" plain label="" onPress={() => move($, -1)} />
+          <Button key="bar" plain autoFocus label="" onPress={() => undefined} />
+          <Button key="down" plain label="" onPress={() => move($, 1)} />
+          <Text color={edge}>╭{'─'.repeat(w - 2)}╮</Text>
         </Box>
         {shown.map(t => (
           <Text>
