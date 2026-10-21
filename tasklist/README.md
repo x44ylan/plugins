@@ -19,5 +19,6 @@ Claude marks tasks `[/]` when it starts them and `[x]` when it finishes them, an
 ## Usage
 
 - Shows the last 7 tasks; the bottom-right says which (`15-21/21`)
+- `ctrl+x tab` focuses it, then `↑` `↓` scroll and `Esc` goes back to the prompt
 - `[-]` or `ctrl+x ctrl+a` hides and shows it
 - `/tasklist:init` merges an existing `TODO.md` / `ISSUES.md` into `TASKLIST.md`
