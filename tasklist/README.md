@@ -29,7 +29,7 @@ The border is gray, and white while focused. Change them in `/plugin` → taskli
 
 ```json
 "pluginConfigs": {
-  "tasklist": { "options": { "borderColor": "gray", "focusColor": "cyan" } }
+  "tasklist@x44ylan": { "options": { "borderColor": "gray", "focusColor": "cyan" } }
 }
 ```
 
