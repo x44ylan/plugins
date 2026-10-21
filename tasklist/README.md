@@ -18,6 +18,6 @@ Claude marks tasks `[/]` when it starts them and `[x]` when it finishes them, an
 
 ## Usage
 
-- `[-]` folds the list to one line, `↑` `↓` scroll it a row; click them, or `ctrl+x tab` then `←` `→` and `Enter`
-- `ctrl+x ctrl+a` hides and shows it
+- Shows the last 7 tasks; the bottom-right says which (`15-21/21`)
+- `[-]` or `ctrl+x ctrl+a` hides and shows it
 - `/tasklist:init` merges an existing `TODO.md` / `ISSUES.md` into `TASKLIST.md`

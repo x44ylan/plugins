@@ -4,10 +4,8 @@ import type { EngineInterface, Register } from 'claude-code'
 import type { TasklistTask as Task } from '../types/index.d.ts'
 
 const FILE = 'TASKLIST.md'
-const tasks = atom({ plugin: 'tasklist', key: 'tasks' } as const, null)
-const top = atom({ plugin: 'tasklist', key: 'top' } as const, 0)
-const folded = atom({ plugin: 'tasklist', key: 'folded' } as const, false)
 const ROWS = 7 // list rows inside the frame
+const tasks = atom({ plugin: 'tasklist', key: 'tasks' } as const, null)
 
 const RULES = `This project's one task list is ${FILE} at the repo root; the person sees it above the prompt.
 It is only a numbered list, no heading: "1. [ ] todo", "2. [/] doing", "3. [x] done", optional indented notes.
@@ -34,7 +32,6 @@ function fit(s: string, w: number) {
 
 let path = FILE
 let last = ''
-let body = ROWS
 
 async function load($: EngineInterface) {
   let text = ''
@@ -42,11 +39,6 @@ async function load($: EngineInterface) {
   if (text === last) return
   last = text
   await update($, tasks, () => (text ? parse(text) : null))
-}
-
-async function move($: EngineInterface, by: number) {
-  const list = (await read($, tasks)) ?? []
-  await update($, top, t => Math.max(0, Math.min((t ?? 0) + by, list.length - body)))
 }
 
 export const register: Register = on => {
@@ -69,38 +61,18 @@ export const register: Register = on => {
     const list = await read($, tasks)
     if (e.props.hasSurvey || !list || list.length === 0) return next(e)
 
-    const { Box, Button, Text } = $.ui.resolve(e)
+    const { Box, Text } = $.ui.resolve(e)
     const w = Math.max(20, e.props.bodyColumns)
     const inner = w - 4 // "│ " + row + " │"
-    body = Math.max(1, Math.min(ROWS, e.props.maxRows - 2))
-    const scrolls = list.length > body
-    const first = scrolls ? Math.max(0, Math.min(await read($, top), list.length - body)) : 0
-    const shown = list.slice(first, first + body)
+    const body = Math.max(1, Math.min(ROWS, e.props.maxRows - 2))
+    const shown = list.slice(-body) // the bottom of the file, where new tasks go
+    const first = list.length - shown.length
     const pad = String(Math.max(...list.map(t => t.n))).length
-    const pos = scrolls ? ` ${first + 1}-${first + shown.length}/${list.length} ` : ''
-    const isFolded = await read($, folded)
-    const doing = list.filter(t => t.status === 'doing').length
-    const done = list.filter(t => t.status === 'done').length
-    const arrows = scrolls && !isFolded ? 4 : 0 // " ↑ ↓"
-    const summary = isFolded ? ` ${done}/${list.length} done${doing ? ` · ${doing} doing` : ''} ` : ''
-
-    const header = (
-      <Box>
-        <Text color="white">{isFolded ? '╶─' : '╭─'}</Text>
-        <Button key="fold" plain dimColor label={isFolded ? '[+]' : '[-]'} onPress={() => update($, folded, f => !f)} />
-        {arrows > 0 && <Text color="white"> </Text>}
-        {arrows > 0 && <Button key="up" plain dimColor label="↑" onPress={() => move($, -1)} />}
-        {arrows > 0 && <Text color="white"> </Text>}
-        {arrows > 0 && <Button key="down" plain dimColor label="↓" onPress={() => move($, 1)} />}
-        <Text dimColor>{summary || ' '}</Text>
-        <Text color="white">{'─'.repeat(Math.max(0, w - 6 - arrows - Math.max(1, summary.length)))}{isFolded ? '╴' : '╮'}</Text>
-      </Box>
-    )
-    if (isFolded) return header
+    const pos = list.length > body ? ` ${first + 1}-${list.length}/${list.length} ` : ''
 
     return (
       <Box flexDirection="column">
-        {header}
+        <Text color="white">╭{'─'.repeat(w - 2)}╮</Text>
         {shown.map(t => (
           <Text>
             <Text color="white">│ </Text>

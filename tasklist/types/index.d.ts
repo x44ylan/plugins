@@ -2,6 +2,6 @@ export type TasklistTask = { n: number; status: 'todo' | 'doing' | 'done'; text:
 
 declare module 'claude-code' {
   interface PluginState {
-    tasklist: { tasks: TasklistTask[] | null; top: number; folded: boolean }
+    tasklist: { tasks: TasklistTask[] | null }
   }
 }
